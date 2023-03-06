@@ -2,11 +2,44 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class crudeClient {
 
-    public static void main(String argv[])
-    {
-        Scanner in = new Scanner(System.in);
+public class crudeClient {
+    String[] msgSequence = new String[6];
+
+    public crudeClient() {
+        /*this.msgSequence[0] = "HELO datacomm.bhsi.xyz";
+        this.msgSequence[1] = "mail from: " + "<" + sender + ">";
+        this.msgSequence[2] = "rcpt to: " + "<" + receiver + ">";
+        this.msgSequence[3] = "DATA";
+        this.msgSequence[4] = message+"\r\n.";
+        this.msgSequence[5] = "QUIT";
+
+        if(msgSequence.equals("emailFromTA")) {
+            this.msgSequence[1] = "mail from: <info@comit.dev>";
+            this.msgSequence[2] = "rcpt to: <s224311@dtu.dk>";
+            this.msgSequence[4] = "Bitch, you look goodt, with a T at the end\r\n.";
+
+        } else {
+            this.msgSequence[1] = "mail from: <s224311@dtu.dk>";
+            this.msgSequence[2] = "rcpt to: <info@comit.dev>";
+            this.msgSequence[4] = "Ima hype her every time, that my mothеrfuckin friend\r\n.";
+
+        }
+
+ */
+
+    }
+
+    public void setMsgSequence(String sender, String receiver, String message) {
+        this.msgSequence[0] = "HELO datacomm.bhsi.xyz";
+        this.msgSequence[1] = "mail from: " + "<" + sender + ">";
+        this.msgSequence[2] = "rcpt to: " + "<" + receiver + ">";
+        this.msgSequence[3] = "DATA";
+        this.msgSequence[4] = message + "\r\n.";
+        this.msgSequence[5] = "QUIT";
+    }
+
+    public void sendMail() {
 
         try{
             Socket socketClient= new Socket("datacomm.bhsi.xyz",2552);
@@ -19,29 +52,13 @@ public class crudeClient {
                     new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
             String s,serverMsg;
 
-            String[] emailFromTA = {
-                    "HELO datacomm.bhsi.xyz",
-                    "mail from: <info@comit.dev>",
-                    "rcpt to: <s224311@dtu.dk>",
-                    "DATA",
-                    "friends 5ever\r\n.",
-                    "QUIT"
-            };
 
-            String[] replyToTA = {
-                    "HELO datacomm.bhsi.xyz",
-                    "mail from: <s224311@dtu.dk>",
-                    "rcpt to: <info@comit.dev>",
-                    "DATA",
-                    "taylor swift for president\r\n.",
-                    "QUIT"
-            };
 
             serverMsg = reader.readLine();
             System.out.println("Server: " + serverMsg);
 
-            for(int i = 0 ; i < emailFromTA.length ; i++) {
-                s = emailFromTA[i];
+            for(int i = 0 ; i < msgSequence.length ; i++) {
+                s = msgSequence[i];
                 System.out.println("Client: " + s);
                 writer.write(s+"\r\n");
                 writer.flush();
