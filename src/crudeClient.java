@@ -25,44 +25,57 @@ public class crudeClient {
 
            /* serverMsg = reader.readLine();
             System.out.println("Server: " + serverMsg);*/
-            s = in.nextLine();
+            //s = in.nextLine();
+            s = "HELO datacomm.bhsi.xyz";
+            System.out.println("Client: " + s);
             writer.write(s+"\r\n");
             writer.flush();
 
             serverMsg = reader.readLine();
-            System.out.println("Client: " + serverMsg);
-            s = in.nextLine();
+            System.out.println("Server: " + serverMsg);
+            //s = in.nextLine();
+            s = "mail from: <info@comit.dev>";
+            System.out.println("Client: " + s);
             writer.write(s+"\r\n");
             writer.flush();
 
 
             serverMsg = reader.readLine();
-            System.out.println("Client: " + serverMsg);
-            s = in.nextLine();
-
+            System.out.println("Server: " + serverMsg);
+            //s = in.nextLine();
+            s = "rcpt to: <s224311@dtu.dk>";
+            System.out.println("Client: " + s);
             writer.write(s+"\r\n");
             writer.flush();
 
             serverMsg = reader.readLine();
-            System.out.println("Client: " + serverMsg);
-            s = in.nextLine();
+            System.out.println("Server: " + serverMsg);
+            //s = in.nextLine();
+            s = "DATA";
+            System.out.println("Client: " + s);
             writer.write(s+"\r\n");
             writer.flush();
 
             serverMsg = reader.readLine();
-            System.out.println("Client: " + serverMsg);
-            s = in.nextLine();
-            String p = in.nextLine();
+            System.out.println("Server: " + serverMsg);
+            //s = in.nextLine();
+            s = "det skal nok gaa";
+            System.out.println("Client: " + s);
+            //String p = in.nextLine();
             writer.write(s+"\r\n");
-            writer.write(p+"\r\n");
+            writer.write("."+"\r\n");
             writer.flush();
 
             serverMsg = reader.readLine();
-            System.out.println("Client: " + serverMsg);
-            s = in.nextLine();
+            System.out.println("Server: " + serverMsg);
+            //s = in.nextLine();
+            s = "QUIT";
+            System.out.println("Client: " + s);
             writer.write(s+"\r\n");
             writer.flush();
 
+            serverMsg = reader.readLine();
+            System.out.println("Server: " + serverMsg);
             //}
 
         }catch(Exception e){e.printStackTrace();}
