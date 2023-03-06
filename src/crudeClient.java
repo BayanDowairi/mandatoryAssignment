@@ -6,30 +6,6 @@ import java.util.*;
 public class crudeClient {
     String[] msgSequence = new String[6];
 
-    public crudeClient() {
-        /*this.msgSequence[0] = "HELO datacomm.bhsi.xyz";
-        this.msgSequence[1] = "mail from: " + "<" + sender + ">";
-        this.msgSequence[2] = "rcpt to: " + "<" + receiver + ">";
-        this.msgSequence[3] = "DATA";
-        this.msgSequence[4] = message+"\r\n.";
-        this.msgSequence[5] = "QUIT";
-
-        if(msgSequence.equals("emailFromTA")) {
-            this.msgSequence[1] = "mail from: <info@comit.dev>";
-            this.msgSequence[2] = "rcpt to: <s224311@dtu.dk>";
-            this.msgSequence[4] = "Bitch, you look goodt, with a T at the end\r\n.";
-
-        } else {
-            this.msgSequence[1] = "mail from: <s224311@dtu.dk>";
-            this.msgSequence[2] = "rcpt to: <info@comit.dev>";
-            this.msgSequence[4] = "Ima hype her every time, that my mothеrfuckin friend\r\n.";
-
-        }
-
- */
-
-    }
-
     public void setMsgSequence(String sender, String receiver, String message) {
         this.msgSequence[0] = "HELO datacomm.bhsi.xyz";
         this.msgSequence[1] = "mail from: " + "<" + sender + ">";
