@@ -19,65 +19,38 @@ public class crudeClient {
                     new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
             String s,serverMsg;
 
-            //while((serverMsg = reader.readLine()) != null){
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
+            String[] emailFromTA = {
+                    "HELO datacomm.bhsi.xyz",
+                    "mail from: <info@comit.dev>",
+                    "rcpt to: <s224311@dtu.dk>",
+                    "DATA",
+                    "friends 5ever\r\n.",
+                    "QUIT"
+            };
 
-           /* serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);*/
-            //s = in.nextLine();
-            s = "HELO datacomm.bhsi.xyz";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-            //s = in.nextLine();
-            s = "mail from: <info@comit.dev>";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
+            String[] replyToTA = {
+                    "HELO datacomm.bhsi.xyz",
+                    "mail from: <s224311@dtu.dk>",
+                    "rcpt to: <info@comit.dev>",
+                    "DATA",
+                    "taylor swift for president\r\n.",
+                    "QUIT"
+            };
 
             serverMsg = reader.readLine();
             System.out.println("Server: " + serverMsg);
-            //s = in.nextLine();
-            s = "rcpt to: <s224311@dtu.dk>";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
 
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-            //s = in.nextLine();
-            s = "DATA";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
+            for(int i = 0 ; i < emailFromTA.length ; i++) {
+                s = emailFromTA[i];
+                System.out.println("Client: " + s);
+                writer.write(s+"\r\n");
+                writer.flush();
 
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-            //s = in.nextLine();
-            s = "det skal nok gaa";
-            System.out.println("Client: " + s);
-            //String p = in.nextLine();
-            writer.write(s+"\r\n");
-            writer.write("."+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-            //s = in.nextLine();
-            s = "QUIT";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-            //}
+                serverMsg = reader.readLine();
+                System.out.println("Server: " + serverMsg);
+            }
 
         }catch(Exception e){e.printStackTrace();}
     }
+
 }
