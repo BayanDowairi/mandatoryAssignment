@@ -1,11 +1,16 @@
 import java.io.*;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
+import java.lang.Object;
 
 
 public class crudeClient {
     String[] msgSequence = new String[6];
+    String imagePath;
 
+    boolean hasAttachment = false;
     public void setMsgSequence(String sender, String receiver, String message) {
         this.msgSequence[0] = "HELO datacomm.bhsi.xyz";
         this.msgSequence[1] = "mail from: " + "<" + sender + ">";
@@ -13,6 +18,18 @@ public class crudeClient {
         this.msgSequence[3] = "DATA";
         this.msgSequence[4] = message + "\r\n.";
         this.msgSequence[5] = "QUIT";
+    }
+
+    public void attachImage(String imagePath) {
+        hasAttachment = true;
+        this.imagePath = imagePath;
+
+    }
+
+    private String convertToImageString() throws IOException {
+        byte[] fileContent = Files.readAllBytes(Paths.get(imagePath));
+        String encodedString = Base64.getEncoder().encodeToString(fileContent);
+        return encodedString;
     }
 
     public void sendMail() {
