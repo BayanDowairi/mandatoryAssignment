@@ -1,69 +1,49 @@
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
+import java.nio.charset.StandardCharsets;
+import javax.net.ssl.*;
 import java.io.*;
-import java.net.*;
-import java.util.*;
+import java.util.Base64;
 
 public class crudeClient {
-    String[] msgSequence = new String[8];
+    // Credentials
+    public static String user = "bayouna96@gmail.com";
+    public static String pass = "qzjiclxjatriavwz";
+    private static DataOutputStream dataOutputStream;
+    public static BufferedReader br = null;
 
-    public void setMsgSequence(String sender, String receiver, String message) {
-        this.msgSequence[0] = "HELO smtp.gmail.com";
-        this.msgSequence[1] = "STARTTLS";
-        this.msgSequence[2] = "mail from: " + "<" + sender + ">";
-        this.msgSequence[3] = "rcpt to: " + "<" + receiver + ">";
-        this.msgSequence[4] = "DATA";
-        this.msgSequence[5] = message + "\r\n.";
-        this.msgSequence[6] = "QUIT";
+    public static void main(String[] args) throws Exception {
+        int delay = 1000;
+
+        String username = Base64.getEncoder().encodeToString(user.getBytes(StandardCharsets.UTF_8));
+        String password = Base64.getEncoder().encodeToString(pass.getBytes(StandardCharsets.UTF_8));
+        SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
+        SSLSocket sslSocket = (SSLSocket) sslSocketFactory.createSocket("smtp.gmail.com", 465);
+
+        br = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
+
+        dataOutputStream = new DataOutputStream(sslSocket.getOutputStream());
+
+        send("EHLO smtp.gmail.com\r\n",9);
+        send("AUTH LOGIN\r\n",1);
+        send(username+"\r\n",1);
+        send(password+"\r\n",1);
+        send("MAIL FROM:<bayouna96@gmail.com>\r\n",1);
+        send("RCPT TO:<amira.mm.omar@gmail.com>\r\n",1);
+        send("DATA\r\n",1);
+        send("Subject: Email test\r\n",0);
+        send("Email Body\r\n",0);
+        send(".\r\n",0);
+        send("QUIT\r\n",1);
     }
+    private static void send(String s, int no_of_response_line) throws Exception
+    {
+        dataOutputStream.writeBytes(s);
+        System.out.println("CLIENT: "+s);
+        Thread.sleep(1000);
 
-    public void sendMail() {
-
-        try {
-            Socket createSocket = new Socket("smtp.gmail.com", 587);
-            System.out.println("Client: " + "Connection Established");
-
-            BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(createSocket.getInputStream()));
-
-            BufferedWriter writer =
-                    new BufferedWriter(new OutputStreamWriter(createSocket.getOutputStream()));
-            String s, serverMsg;
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-
-            for (int i = 0; i < msgSequence.length; i++) {
-                s = msgSequence[i];
-                System.out.println("Client: " + s);
-                writer.write(s + "\r\n");
-                writer.flush();
-
-                serverMsg = reader.readLine();
-                System.out.println("Server: " + serverMsg);
-
-                if (s.equals("STARTTLS")) {
-                    createSocket = new Socket("smtp.gmail.com", 587);
-                    reader = new BufferedReader(new InputStreamReader(createSocket.getInputStream()));
-                    writer = new BufferedWriter(new OutputStreamWriter(createSocket.getOutputStream()));
-                    serverMsg = reader.readLine();
-                    System.out.println("Server: " + serverMsg);
-                    writer.write(s + "\r\n");
-                    writer.flush();
-
-                    SSLSocketFactory sslSocketFactory = (SSLSocketFactory) SSLSocketFactory.getDefault();
-                    SSLSocket sslSocket = (SSLSocket) sslSocketFactory.createSocket(createSocket, "smtp.gmail.com", 587, true);
-
-                    reader = new BufferedReader(new InputStreamReader(sslSocket.getInputStream()));
-                    writer = new BufferedWriter(new OutputStreamWriter(sslSocket.getOutputStream()));
-
-                    serverMsg = reader.readLine();
-                    System.out.println("Server: " + serverMsg);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Just reading the number of lines the server will respond.
+        for (int i = 0; i < no_of_response_line; i++) {
+            System.out.println("SERVER : " +br.readLine());
         }
     }
+
 }
