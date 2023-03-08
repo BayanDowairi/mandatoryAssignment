@@ -83,21 +83,18 @@ public class crudeClient {
             serverMsg = reader.readLine();
             System.out.println("Server: " + serverMsg);
 
-           String t = "TO: s224311@dtu.dk" + "\r\n" + "FROM: info@comit.dev" + "\r\n" + "MIME-Version: 1.0" + "\r\n" +
+           s = "TO: s224311@dtu.dk" + "\r\n" + "FROM: info@comit.dev" + "\r\n" + "MIME-Version: 1.0" + "\r\n" +
                     "Content-Type:multipart/mixed;boundary=\"[mystrongassboundary]\"" + "\r\n" +
-                    "--[mystrongassboundary]" + "\r\n" +
-                    "Content-type: text/plain; charset=utf-8" + "\r\n" + message + "--[mystrongassboundary]";
+                    "--[mystrongassboundary]" + "\r\n" + "\r\n" + message + "\r\n" +
+                   "--[mystrongassboundary]" + "\r\n";
 
             String p =
-                    "Content-Type:image/jpeg;" + "\r\n" +
-                    "Content-Disposition:attachment;filename=\"clippy.jpeg\"" + "\r\n" +
-                    "Content-Transfer-Encoding:base64" + "\r\n" + getImageString() +
-                    "\r\n" + ".";
+                            "Content-Type:image/jpeg;" + "\r\n" +
+                            "Content-Disposition:attachment;filename=\"clippy.jpeg\"" + "\r\n" +
+                            "Content-Transfer-Encoding:base64" + "\r\n" + "\r\n" + getImageString() +  "--[mystrongassboundary]--"+"\r\n"+".";
 
-            s = t+p;
-
-            writer.write(s+"\r\n");
-            System.out.println("Client: " + s);
+            writer.write(s+p+"\r\n");
+            System.out.println("Client: " + s+p);
             /*while(!s.equals(".")) {
                 s = in.nextLine();
                 writer.write(s+"\r\n");
