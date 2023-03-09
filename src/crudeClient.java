@@ -6,19 +6,11 @@ import java.util.*;
 
 
 public class crudeClient {
-    String[] msgSequence = new String[6];
+    String[] clientResponse = new String[5];
     String imagePath;
 
     String message;
     boolean hasAttachment = false;
-    public void setMsgSequence(String sender, String receiver, String message) {
-        this.message = message;
-        this.msgSequence[1] = "mail from: " + "<" + sender + ">";
-        this.msgSequence[2] = "rcpt to: " + "<" + receiver + ">";
-        this.msgSequence[3] = "DATA";
-        this.msgSequence[4] = message + "\r\n.";
-        this.msgSequence[5] = "QUIT";
-    }
 
     public void attachImage(String imagePath) throws IOException {
         hasAttachment = true;
@@ -27,111 +19,32 @@ public class crudeClient {
         
     }
 
+    public void setClientSequence(String sender, String receiver, String message) throws IOException {
+        this.message = message;
+        this.clientResponse[0] = "mail from: " + "<" + sender + ">";
+        this.clientResponse[1] = "rcpt to: " + "<" + receiver + ">";
+        this.clientResponse[2] = "DATA";
+        if (hasAttachment){
+            this.clientResponse[3] = "TO: " + receiver + "\r\n" + "FROM: " + sender + "\r\n" + "MIME-Version: 1.0" + "\r\n" +
+                    "Content-Type:multipart/mixed;boundary=\"[mystrongassboundary]\"" + "\r\n" +
+                    "--[mystrongassboundary]" + "\r\n" + "\r\n" + message + "\r\n" +
+                    "--[mystrongassboundary]" + "\r\n" +
+                    "Content-Type:image/jpeg;" + "\r\n" +
+                    "Content-Disposition:attachment;filename=\"clippy.jpeg\"" + "\r\n" +
+                    "Content-Transfer-Encoding:base64" + "\r\n" + "\r\n" +
+                    getImageString() +  "--[mystrongassboundary]--"+"\r\n"+".";
+
+        } else {
+        this.clientResponse[3] = message + "\r\n.";
+        }
+        this.clientResponse[4] = "QUIT";
+    }
+
     private String getImageString() throws IOException {
         byte[] fileContent = Files.readAllBytes(Paths.get(imagePath));
         String encodedString = Base64.getEncoder().encodeToString(fileContent);
         return encodedString;
     }
-
-    public void sendImage() {
-        try{
-            Socket socketClient= new Socket("datacomm.bhsi.xyz",2552);
-
-            BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
-
-            BufferedWriter writer=
-                    new BufferedWriter(new OutputStreamWriter(socketClient.getOutputStream()));
-
-            String s,serverMsg;
-
-            Scanner in = new Scanner(System.in);
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg); // 220 Welcome to...
-
-            s = "EHLO datacomm.bhsi.xyz";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-           for (int i = 0 ; i < 11 ; i++) {
-                serverMsg = reader.readLine();
-                System.out.println("Server: " + serverMsg);
-            }
-
-            s =  "mail from: <info@comit.dev>";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-
-            s = "rcpt to: <s224311@dtu.dk>";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-
-            s = "DATA";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-
-           s = "TO: s224311@dtu.dk" + "\r\n" + "FROM: info@comit.dev" + "\r\n" + "MIME-Version: 1.0" + "\r\n" +
-                    "Content-Type:multipart/mixed;boundary=\"[mystrongassboundary]\"" + "\r\n" +
-                    "--[mystrongassboundary]" + "\r\n" + "\r\n" + message + "\r\n" +
-                   "--[mystrongassboundary]" + "\r\n";
-
-            String p =
-                            "Content-Type:image/jpeg;" + "\r\n" +
-                            "Content-Disposition:attachment;filename=\"clippy.jpeg\"" + "\r\n" +
-                            "Content-Transfer-Encoding:base64" + "\r\n" + "\r\n" + getImageString() +  "--[mystrongassboundary]--"+"\r\n"+".";
-
-            writer.write(s+p+"\r\n");
-            System.out.println("Client: " + s+p);
-            /*while(!s.equals(".")) {
-                s = in.nextLine();
-                writer.write(s+"\r\n");
-            }*/
-
-            //String p = in.nextLine();
-            //writer.write(s+"\r\n"+p+"\r\n");
-            writer.flush();
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-
-            s = "QUIT";
-            System.out.println("Client: " + s);
-            writer.write(s+"\r\n");
-            writer.flush();
-
-
-            serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
-
-/*
-
-            for(int i = 0 ; i < 4 ; i++) {
-                s = msgSequence[i];
-                System.out.println("Client: " + s);
-                writer.write(s+"\r\n");
-                writer.flush();
-
-                serverMsg = reader.readLine();
-                System.out.println("Server: " + serverMsg);
-            }
-*/
-        }catch(Exception e){e.printStackTrace();}
-
-    }
-
 
     public void sendMail() {
 
@@ -147,10 +60,29 @@ public class crudeClient {
             String s,serverMsg;
 
             serverMsg = reader.readLine();
-            System.out.println("Server: " + serverMsg);
+            System.out.println("Server: " + serverMsg); // 220 Welcome to...
 
-            for(int i = 0 ; i < 4 ; i++) {
-                s = msgSequence[i];
+            //-------------------------------------------------------------//
+            //                      Greeting the server                    //
+            //-------------------------------------------------------------//
+            s = "EHLO datacomm.bhsi.xyz";
+            System.out.println("Client: " + s);
+            writer.write(s+"\r\n");
+            writer.flush();
+
+            //-------------------------------------------------------------//
+            //         Printing out supported service extensions           //
+            //-------------------------------------------------------------//
+            for (int i = 0 ; i < 11 ; i++) {
+                serverMsg = reader.readLine();
+                System.out.println("Server: " + serverMsg);
+            }
+
+            //------------------------------------------------------------------//
+            //  Perform all necessary client/server interactions to send email  //
+            //------------------------------------------------------------------//
+            for(int i = 0 ; i < clientResponse.length ; i++) {
+                s = clientResponse[i];
                 System.out.println("Client: " + s);
                 writer.write(s+"\r\n");
                 writer.flush();
