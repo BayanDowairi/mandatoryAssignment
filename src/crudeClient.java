@@ -9,12 +9,14 @@ public class crudeClient {
     String[] clientResponse = new String[5];
     String imagePath;
 
+    String fileName;
     String message;
     boolean hasAttachment = false;
 
-    public void attachImage(String imagePath) throws IOException {
+    public void attachImage(String imagePath, String fileName) throws IOException {
         hasAttachment = true;
         this.imagePath = imagePath;
+        this.fileName = fileName;
         getImageString();
         
     }
@@ -30,7 +32,7 @@ public class crudeClient {
                     "--[mystrongassboundary]" + "\r\n" + "\r\n" + message + "\r\n" +
                     "--[mystrongassboundary]" + "\r\n" +
                     "Content-Type:image/jpeg;" + "\r\n" +
-                    "Content-Disposition:attachment;filename=\"clippy.jpeg\"" + "\r\n" +
+                    "Content-Disposition:attachment;filename=\"" + fileName + "\"" + "\r\n" +
                     "Content-Transfer-Encoding:base64" + "\r\n" + "\r\n" +
                     getImageString() +  "--[mystrongassboundary]--"+"\r\n"+".";
 
