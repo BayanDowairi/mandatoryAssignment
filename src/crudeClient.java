@@ -8,7 +8,6 @@ import java.util.*;
 public class crudeClient {
     String[] clientResponse = new String[5];
     String imagePath;
-
     String fileName;
     String message;
     boolean hasAttachment = false;
@@ -18,7 +17,11 @@ public class crudeClient {
         this.imagePath = imagePath;
         this.fileName = fileName;
         getImageString();
-        
+    }
+    private String getImageString() throws IOException {
+        byte[] fileContent = Files.readAllBytes(Paths.get(imagePath));
+        String encodedString = Base64.getEncoder().encodeToString(fileContent);
+        return encodedString;
     }
 
     public void setClientSequence(String sender, String receiver, String message) throws IOException {
@@ -44,12 +47,6 @@ public class crudeClient {
                 + message + "\r\n.";
         }
         this.clientResponse[4] = "QUIT";
-    }
-
-    private String getImageString() throws IOException {
-        byte[] fileContent = Files.readAllBytes(Paths.get(imagePath));
-        String encodedString = Base64.getEncoder().encodeToString(fileContent);
-        return encodedString;
     }
 
     public void sendMail() {
@@ -99,6 +96,4 @@ public class crudeClient {
 
         }catch(Exception e){e.printStackTrace();}
     }
-
-
 }
