@@ -27,7 +27,9 @@ public class crudeClient {
         this.clientResponse[1] = "rcpt to: " + "<" + receiver + ">";
         this.clientResponse[2] = "DATA";
         if (hasAttachment){
-            this.clientResponse[3] = "TO: " + receiver + "\r\n" + "FROM: " + sender + "\r\n" + "MIME-Version: 1.0" + "\r\n" +
+            this.clientResponse[3] = "TO: " + receiver + "\r\n" + "FROM: " + sender + "\r\n"
+                    + "SUBJECT: Mandatory Assignment" + "\r\n"
+                    + "MIME-Version: 1.0" + "\r\n" +
                     "Content-Type:multipart/mixed;boundary=\"[mystrongassboundary]\"" + "\r\n" +
                     "--[mystrongassboundary]" + "\r\n" + "\r\n" + message + "\r\n" +
                     "--[mystrongassboundary]" + "\r\n" +
@@ -37,7 +39,9 @@ public class crudeClient {
                     getImageString() +  "--[mystrongassboundary]--"+"\r\n"+".";
 
         } else {
-        this.clientResponse[3] = message + "\r\n.";
+        this.clientResponse[3] = "FROM: " + sender + "\r\n" + "TO: " + receiver + "\r\n"
+                + "SUBJECT: Mandatory Assignment" + "\r\n"
+                + message + "\r\n.";
         }
         this.clientResponse[4] = "QUIT";
     }
