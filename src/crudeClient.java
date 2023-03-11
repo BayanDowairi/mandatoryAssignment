@@ -27,7 +27,7 @@ public class crudeClient {
         send(username+"\r\n",1);
         send(password+"\r\n",1);
         send("MAIL FROM:<bayouna96@gmail.com>\r\n",1);
-        send("RCPT TO:<amira.mm.omar@gmail.com>\r\n",1);
+        send("RCPT TO:<nr.salmani@gmail.com>\r\n",1);
         send("DATA\r\n",1);
         send("Subject: Email test\r\n",0);
         send("Email Body\r\n",0);
