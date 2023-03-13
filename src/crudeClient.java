@@ -23,7 +23,7 @@ public class crudeClient {
         this.clientResponse[4] = "RCPT TO:<nr.salmani@gmail.com>\r\n";
         this.clientResponse[5] = "DATA\r\n";
         this.clientResponse[6] = "Subject: Email test\r\n";
-        this.clientResponse[7] = "Email Body: Hiiiii " ;
+        this.clientResponse[7] = "Helloooo, It's group 11. It is a mail from Gmail:)\r\n";
         this.clientResponse[8] = ".\r\n";
         this.clientResponse[9] = "QUIT\r\n";
 
@@ -41,10 +41,26 @@ public class crudeClient {
             s = "EHLO smtp.gmail.com\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
             // Read from the server
-            serverMsg = reader.readLine(); // 220 smtp.gmail.com ESMTP
+            /*
+            Server:220 smtp.gmail.com ESMTP j3-20020a1709062a0300b008cc920469b5sm3404970eje.18 - gsmtp
+            Server:250-smtp.gmail.com at your service, [213.237.90.36]
+            Server:250-SIZE 35882577
+            Server:250-8BITMIME
+            Server:250-AUTH LOGIN PLAIN XOAUTH2 PLAIN-CLIENTTOKEN OAUTHBEARER XOAUTH
+            Server:250-ENHANCEDSTATUSCODES
+            Server:250-PIPELINING
+            Server:250-CHUNKING
+             */
+
+            for (int i = 0; i < 8; i++) {
+                serverMsg = reader.readLine(); // 250-smtp.gmail.com at your service, [2.109.71.78]
+                System.out.println("Server:" + serverMsg);
+
+            }
+            /*serverMsg = reader.readLine(); // 220 smtp.gmail.com ESMTP
             System.out.println("Server:" + serverMsg);
 
             serverMsg = reader.readLine(); // 250-smtp.gmail.com at your service, [2.109.71.78]
@@ -69,14 +85,14 @@ public class crudeClient {
             System.out.println("Server:" + serverMsg);
 
             serverMsg = reader.readLine(); // 250 SMTPUTF8
-            System.out.println("Server:" + serverMsg);
+            System.out.println("Server:" + serverMsg);*/
 
 
             for (int i = 0; i < 6; i++) {
                 s = clientResponse[i];
                 System.out.println("Client:" + s);
                 dataOutputStream.writeBytes(s);
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
                 serverMsg = reader.readLine();
                 System.out.println("Server:" + serverMsg);
 
@@ -86,22 +102,22 @@ public class crudeClient {
             s = "Subject: Email test\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
             s = "Helloooo, It's group 11. It is a mail from Gmail:)\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
             s = ".\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
             s = "QUIT\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
 
             serverMsg = reader.readLine();
             System.out.println("Server:" + serverMsg);
