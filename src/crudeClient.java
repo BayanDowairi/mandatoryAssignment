@@ -6,8 +6,8 @@ import java.util.Base64;
 
 public class crudeClient {
     // Credentials
-    public static String user = "bayouna96@gmail.com";
-    public static String pass = "qzjiclxjatriavwz";
+    public static String user = "XXXXX@gmail.com";
+    public static String pass = "xXXXXXxxxX";
     private String message;
     String[] clientResponse = new String[10];
     String username = Base64.getEncoder().encodeToString(user.getBytes(StandardCharsets.UTF_8));
@@ -41,7 +41,7 @@ public class crudeClient {
             s = "EHLO smtp.gmail.com\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            //Thread.sleep(1000);
+
 
             // Read from the server
             /*
@@ -60,64 +60,35 @@ public class crudeClient {
                 System.out.println("Server:" + serverMsg);
 
             }
-            /*serverMsg = reader.readLine(); // 220 smtp.gmail.com ESMTP
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-smtp.gmail.com at your service, [2.109.71.78]
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-SIZE 35882577
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-8BITMIME
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-AUTH LOGIN PLAIN ...
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-ENHANCEDSTATUSCODES
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-PIPELINING
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250-CHUNKING
-            System.out.println("Server:" + serverMsg);
-
-            serverMsg = reader.readLine(); // 250 SMTPUTF8
-            System.out.println("Server:" + serverMsg);*/
-
 
             for (int i = 0; i < 6; i++) {
                 s = clientResponse[i];
                 System.out.println("Client:" + s);
                 dataOutputStream.writeBytes(s);
-                //Thread.sleep(1000);
                 serverMsg = reader.readLine();
                 System.out.println("Server:" + serverMsg);
 
             }
 
-
+            //The next 3 sections of code, didnt work under the for loop, so we decided to write them outside loop
             s = "Subject: Email test\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            //Thread.sleep(1000);
+
 
             s = "Helloooo, It's group 11. It is a mail from Gmail:)\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            //Thread.sleep(1000);
+
 
             s = ".\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            //Thread.sleep(1000);
+
 
             s = "QUIT\r\n";
             System.out.println("Client: " + s);
             dataOutputStream.writeBytes(s);
-            //Thread.sleep(1000);
 
             serverMsg = reader.readLine();
             System.out.println("Server:" + serverMsg);
