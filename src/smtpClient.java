@@ -1,10 +1,9 @@
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import javax.net.ssl.*;
 import java.io.*;
 import java.util.Base64;
 
-public class crudeClient {
+public class smtpClient {
     // Credentials
     public static String user = "XXXXX@gmail.com";
     public static String pass = "xXXXXXxxxX";
