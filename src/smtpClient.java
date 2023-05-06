@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.util.*;
 
 
-public class crudeClient {
+public class smtpClient {
     String[] clientResponse = new String[5];
     String imagePath;
     String fileName;
